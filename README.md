@@ -26,7 +26,9 @@ You can see Emerson College's Median instance at [https://median.emerson.edu/](h
 
 ## Getting Started + Setting It Up
 
-To set up your own instance of Median, check out the `docs` folder, starting with `docs/DOCS-INDEX.md`.
+To set up your own instance of Median, clone this repo, check out the `docs` folder, starting with `docs/DOCS-INDEX.md`.
+
+I strongly suggest you fork this master repo and use git's [sparse checkout](http://jasonkarns.com/blog/subdirectory-checkouts-with-git-sparse-checkout/) feature to keep each piece/layer of Median up to date based on your fork.
 
 ## A little history
 
