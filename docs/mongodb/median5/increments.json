@@ -1,0 +1,7 @@
+{ "_id" : { "$oid" : "503e395e4c79f5f741000000" }, "id" : { "$numberLong" : "1" }, "w" : "mid" }
+{ "_id" : { "$oid" : "503e395e4c79f5f741000001" }, "id" : { "$numberLong" : "1" }, "w" : "uid" }
+{ "_id" : { "$oid" : "503e395e4c79f5f741000002" }, "w" : "eid", "id" : 1 }
+{ "_id" : { "$oid" : "503e395e4c79f5f741000003" }, "id" : { "$numberLong" : "1" }, "w" : "cid" }
+{ "_id" : { "$oid" : "503e395e4c79f5f741000004" }, "id" : { "$numberLong" : "1" }, "w" : "plid" }
+{ "_id" : { "$oid" : "503e395e4c79f5f741000005" }, "id" : { "$numberLong" : "1" }, "w" : "gid" }
+{ "_id" : { "$oid" : "503e395e4c79f5f741000006" }, "id" : { "$numberLong" : "1" }, "w" : "lid" }

@@ -1,0 +1,44 @@
+{ "_id" : { "$oid" : "5006f334a2749e0c23000029" }, "id" : "director", "d" : "Director" }
+{ "_id" : { "$oid" : "5006f334a2749e0c2300002a" }, "id" : "company", "d" : "Company" }
+{ "_id" : { "$oid" : "5006f334a2749e0c2300002b" }, "id" : "producer", "d" : "Producer(s)" }
+{ "_id" : { "$oid" : "5006f334a2749e0c2300002c" }, "id" : "actors", "d" : "Actor(s)" }
+{ "_id" : { "$oid" : "5006f334a2749e0c2300002d" }, "id" : "dirphoto", "d" : "Director(s) of Photography" }
+{ "_id" : { "$oid" : "5006f334a2749e0c2300002e" }, "id" : "narrator", "d" : "Narrator(s)" }
+{ "_id" : { "$oid" : "5006f334a2749e0c2300002f" }, "id" : "genre", "d" : "Genre" }
+{ "_id" : { "$oid" : "5006f334a2749e0c23000030" }, "id" : "country", "d" : "Country" }
+{ "_id" : { "$oid" : "5006f334a2749e0c23000031" }, "id" : "station", "d" : "Station" }
+{ "_id" : { "$oid" : "5006f334a2749e0c23000032" }, "id" : "airdate", "d" : "Air Date" }
+{ "_id" : { "$oid" : "5006f334a2749e0c23000033" }, "id" : "reporter", "d" : "Reporter(s)" }
+{ "_id" : { "$oid" : "5006f334a2749e0c23000034" }, "id" : "network", "d" : "Network" }
+{ "_id" : { "$oid" : "5006f334a2749e0c23000035" }, "id" : "anchors", "d" : "Anchor(s)" }
+{ "_id" : { "$oid" : "5006f334a2749e0c23000036" }, "id" : "writers", "d" : "Writer(s)" }
+{ "_id" : { "$oid" : "5006f334a2749e0c23000037" }, "id" : "semester", "d" : "Semester" }
+{ "_id" : { "$oid" : "5006f334a2749e0c23000038" }, "id" : "syndicated", "d" : "Syndicated" }
+{ "_id" : { "$oid" : "5006f334a2749e0c23000039" }, "id" : "showtitle", "d" : "Show Title" }
+{ "_id" : { "$oid" : "5006f334a2749e0c2300003a" }, "id" : "episodenumber", "d" : "Episode Number" }
+{ "_id" : { "$oid" : "5006f334a2749e0c2300003b" }, "id" : "episodepremiere", "d" : "Episode Premiere" }
+{ "_id" : { "$oid" : "5006f334a2749e0c2300003c" }, "id" : "seasonnumber", "d" : "Season Number" }
+{ "_id" : { "$oid" : "5006f334a2749e0c2300003d" }, "id" : "seriespremiere", "d" : "Series Premiere" }
+{ "_id" : { "$oid" : "5006f334a2749e0c2300003e" }, "id" : "creator", "d" : "Creator(s)" }
+{ "_id" : { "$oid" : "5006f334a2749e0c2300003f" }, "id" : "source", "d" : "Source" }
+{ "_id" : { "$oid" : "5006f334a2749e0c23000040" }, "id" : "createdon", "d" : "Created On" }
+{ "_id" : { "$oid" : "5006f334a2749e0c23000041" }, "id" : "albumtitle", "d" : "Album Title" }
+{ "_id" : { "$oid" : "5006f334a2749e0c23000042" }, "id" : "artist", "d" : "Artist" }
+{ "_id" : { "$oid" : "5006f334a2749e0c23000043" }, "id" : "tracknum", "d" : "Track Number" }
+{ "_id" : { "$oid" : "5006f334a2749e0c23000044" }, "id" : "recordlabel", "d" : "Record Label" }
+{ "_id" : { "$oid" : "5006f334a2749e0c23000045" }, "id" : "releaseyear", "d" : "Release Year" }
+{ "_id" : { "$oid" : "5006f334a2749e0c23000046" }, "id" : "origin", "d" : "Origin" }
+{ "_id" : { "$oid" : "5006f334a2749e0c23000047" }, "id" : "shows", "d" : "Show(s)" }
+{ "_id" : { "$oid" : "5006f334a2749e0c23000048" }, "id" : "showtitle", "d" : "Show Title" }
+{ "_id" : { "$oid" : "5006f334a2749e0c23000049" }, "id" : "host", "d" : "Host" }
+{ "_id" : { "$oid" : "5006f334a2749e0c2300004a" }, "id" : "location", "d" : "Location(s)" }
+{ "_id" : { "$oid" : "5006f334a2749e0c2300004b" }, "id" : "material", "d" : "Material" }
+{ "_id" : { "$oid" : "5006f334a2749e0c2300004c" }, "id" : "method", "d" : "Method" }
+{ "_id" : { "$oid" : "5006f334a2749e0c2300004d" }, "id" : "camera", "d" : "Camera" }
+{ "_id" : { "$oid" : "5006f334a2749e0c2300004e" }, "id" : "photographer", "d" : "Photographer" }
+{ "_id" : { "$oid" : "5006f334a2749e0c2300004f" }, "id" : "agency", "d" : "Agency" }
+{ "_id" : { "$oid" : "5006f334a2749e0c23000050" }, "id" : "client", "d" : "Client" }
+{ "_id" : { "$oid" : "5006f334a2749e0c23000051" }, "id" : "transcript", "d" : "Transcript" }
+{ "_id" : { "$oid" : "5006f334a2749e0c23000052" }, "id" : "copyright_yr", "d" : "License Year", "u" : false }
+{ "_id" : { "$oid" : "5006f334a2749e0c23000053" }, "id" : "copyright_holder", "d" : "License Holder", "u" : false }
+{ "_id" : { "$oid" : "5008197d439e1858b38b4a65" }, "d" : "Notes/Description", "id" : "notes" }

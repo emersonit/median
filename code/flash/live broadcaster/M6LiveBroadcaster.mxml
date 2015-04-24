@@ -1,0 +1,238 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Application xmlns:fx="http://ns.adobe.com/mxml/2009" 
+			   xmlns:s="library://ns.adobe.com/flex/spark" 
+			   xmlns:mx="library://ns.adobe.com/flex/mx" minWidth="500" minHeight="400" width="100%" height="100%" backgroundAlpha="0" backgroundColor="0xDDDDDD" creationComplete="broadcastInit()">
+	<fx:Script>
+		<![CDATA[
+			import mx.collections.*;
+			import mx.controls.*;
+			import mx.core.*;
+			import mx.rpc.events.*;
+			import mx.utils.*;
+			
+			// environment stuff
+			private var whereami:String = 'https://median.emerson.edu/';
+			private var live_stream_server:String = 'rtmp://m6-streaming-3.emerson.edu/live/';
+			
+			// user stuff
+			private var user_id:int = 0;
+			private var user_group:int = 6;
+			
+			// broadcast stuff
+			private var broadcast_stream_id:int = 0;
+			[Bindable]
+			private var cameraOptions:ArrayCollection;
+			[Bindable]
+			private var aspectOptions:ArrayCollection = new ArrayCollection(new Array( {label: '4:3', width: 640, height: 480}, {label: '16:9', width: 640, height: 360} ));
+			[Bindable]
+			private var accessOptions:ArrayCollection;
+			private var broadcast_nc:NetConnection;
+			private var broadcast_ns:NetStream;
+			private var broadcast_cam:Camera;
+			private var broadcast_mic:Microphone;
+			
+			private function broadcastInit():void {
+				
+				// get user info
+				getUserInfo.url = whereami + 'live_userinfo.php';
+				getUserInfo.send();
+				
+				// attach camera and stuff
+				broadcast_cam = Camera.getCamera();
+				broadcast_mic = Microphone.getMicrophone();
+				if (broadcast_cam != null) {
+					//liveFeedVideo.attachCamera(broadcast_cam);
+					cameraOptions = new ArrayCollection(Camera.names);
+					for (var i:int = 0; i < cameraOptions.length; i++) {
+						if (cameraOptions[i] == broadcast_cam.name) {
+							cameraInput.selectedIndex = i;
+						}
+					}
+					broadcast_cam.setQuality(800000, 90);
+					broadcast_cam.setMode(640, 480, 30);
+					broadcastVideo.attachCamera(broadcast_cam);
+					broadcastVideo.width = 640;
+					broadcastVideo.height = 480;
+					broadcastVideo.x = 220;
+					broadcastVideo.y = 10;
+					broadcastVideo.visible = true;
+					broadcast_nc = new NetConnection();
+					broadcast_nc.client = this;
+				}
+			}
+			
+			private function returnUserInfo(e:ResultEvent):void {
+				// ok, have user info, parse it
+				var returnedString:String = StringUtil.trim(String(e.result));
+				if (returnedString.indexOf('ERROR') != -1) {
+					// uh oh, an error that shouldn't be there...
+					Alert.show(returnedString, 'Error');
+				} else {
+					//Alert.show(decodedString);
+					var uidAndTime:RegExp = /^\d+\.\d+\.\d+$/;
+					if (uidAndTime.test(returnedString)) {
+						// ok, we got the right info
+						var userInfoSplit:Array = returnedString.split('.');
+
+						// set user info
+						user_id = int(Number(userInfoSplit[0])); // the first group of digits
+						user_group = int(Number(userInfoSplit[1])); // the second group of digits
+						//Alert.show('all set');
+						
+						if (user_group < 6) {
+							var tempAccessOptions:Array = new Array();
+							if (user_group == 1) {
+								tempAccessOptions.push( { label: 'Admin-only', group: 1 } );
+							}
+							if (user_group < 5) {
+								tempAccessOptions.push( { label: 'Faculty-only', group: 4 } );
+							}
+							tempAccessOptions.push( { label: 'Emerson Community', group: 5 } );
+							if (user_group < 5) {
+								tempAccessOptions.push( { label: 'Public', group: 6 } );
+							}
+							accessOptions = new ArrayCollection(tempAccessOptions);
+							accessInput.dataProvider = accessOptions;
+							accessInput.selectedIndex = 0;
+							startBtn.enabled = true;
+						}
+					} else {
+						// crap returned, oh shit.
+						Alert.show('Error retrieving user info.', 'Error!');
+					}
+				}
+			}
+			
+			private function changeCamera():void {
+				broadcast_cam = Camera.getCamera(String(cameraInput.selectedIndex));
+				broadcast_cam.setMode(cameraInput.selectedItem.width, cameraInput.selectedItem.height, 30);
+				broadcastVideo.attachCamera(broadcast_cam);
+				broadcastVideo.width = cameraInput.selectedItem.width;
+				broadcastVideo.height = cameraInput.selectedItem.height;
+			}
+			
+			private function changeAspect():void {
+				broadcast_cam = Camera.getCamera(String(cameraInput.selectedIndex));
+				broadcast_cam.setMode(aspectInput.selectedItem.width, aspectInput.selectedItem.height, 30);
+				broadcastVideo.attachCamera(broadcast_cam);
+				broadcastVideo.width = aspectInput.selectedItem.width;
+				broadcastVideo.height = aspectInput.selectedItem.height;
+			}
+			
+			private function startBroadcast():void {
+				// start nc
+				if (StringUtil.trim(titleInput.text) == '') {
+					Alert.show('You forgot to give your broadcast a title!');
+					return;
+				} else if (accessInput.selectedItem == null || accessInput.selectedItem < 0) {
+					Alert.show('You forgot to set an access level!');
+					return;
+				}
+				if (broadcast_nc.connected == false) {
+					broadcast_nc.addEventListener(NetStatusEvent.NET_STATUS, broadcastStatusHandler);
+					broadcast_nc.connect(live_stream_server);
+				} else {
+					sendStreamData();
+				}
+			}
+			
+			private function broadcastStatusHandler(e:NetStatusEvent):void {
+				switch (e.info.code) {
+					case "NetConnection.Connect.Success":
+						sendStreamData();
+						break;
+				}
+			}
+			
+			private function sendStreamData():void {
+				// send info to database
+				startStreamService.url = whereami + 'live_new.php';
+				startStreamService.request = { access: accessInput.selectedItem.group, title: titleInput.text };
+				startStreamService.send();
+			}
+			
+			private function startStreamResult(e:ResultEvent):void {
+				var testResult:RegExp = new RegExp('\D+');
+				if (testResult.test(e.result.toString()) == false) {
+					broadcast_stream_id = Number(e.result);
+					//Alert.show('broadcast ID will be ' + broadcast_stream_id.toString());
+					actuallyStartBroadcast();
+				} else {
+					Alert.show(e.message.toString(), 'Error sending data');
+				}
+			}
+			
+			private function actuallyStartBroadcast():void {
+				recordCanvas.visible = true;
+				startBtn.enabled = false;
+				stopBtn.enabled = true;
+				titleInput.enabled = false;
+				accessInput.enabled = false;
+				cameraInput.enabled = false;
+				aspectInput.enabled = false;
+				// send to FMS
+				broadcast_ns = new NetStream(broadcast_nc);
+				broadcast_ns.addEventListener(NetStatusEvent.NET_STATUS, broadcastStatusHandler);
+				broadcast_ns.attachAudio(broadcast_mic);
+				broadcast_ns.attachCamera(broadcast_cam);
+				broadcast_ns.publish('ms' + broadcast_stream_id, 'live');
+				liveURL.text = whereami + 'live/' + broadcast_stream_id.toString() + '/';
+			}
+			
+			private function stopBroadcast():void {
+				// dump broadcast stuff
+				broadcast_stream_id = 0;
+				titleInput.text = '';
+				liveURL.text = '';
+				accessInput.selectedItem = -1;
+				titleInput.enabled = true;
+				accessInput.enabled = true;
+				cameraInput.enabled = true;
+				aspectInput.enabled = true;
+				startBtn.enabled = true;
+				stopBtn.enabled = false;
+				recordCanvas.visible = false;
+				if (broadcast_nc.connected) {
+					broadcast_ns.close();
+				}
+			}
+			
+			private function returnUserInfoFault(e:FaultEvent):void {
+				// do what? lol
+				Alert.show('Error retrieving user info.', 'Error!');
+			}
+			
+			public function onBWDone(e:*=null):void {
+				
+			}
+		]]>
+	</fx:Script>
+	<fx:Declarations>
+		<!-- Place non-visual elements (e.g., services, value objects) here -->
+		<s:HTTPService id="getUserInfo" showBusyCursor="true" resultFormat="text" result="returnUserInfo(event)" fault="returnUserInfoFault(event)" />
+		<s:HTTPService id="startStreamService" result="startStreamResult(event)" fault="returnUserInfoFault(event)" showBusyCursor="true" method="POST" resultFormat="text" />
+	</fx:Declarations>
+	<s:HGroup paddingTop="5" paddingBottom="5" paddingLeft="5" paddingRight="5" width="100%" height="100%">
+		<s:VGroup width="200">
+			<s:Label fontFamily="Verdana" text="Title:" width="100%" />
+			<s:TextInput id="titleInput" width="100%" />
+			<s:Label fontFamily="Verdana" text="Access:" width="100%" />
+			<s:DropDownList id="accessInput" labelField="label" prompt="Choose..." width="100%" />
+			<mx:Spacer height="20" />
+			<s:Label fontFamily="Verdana" text="Camera:" width="100%" />
+			<s:DropDownList id="cameraInput" dataProvider="{cameraOptions}" change="changeCamera()" width="100%" />
+			<s:Label fontFamily="Verdana" text="Aspect Ratio:" width="100%" />
+			<s:DropDownList id="aspectInput" selectedIndex="0" dataProvider="{aspectOptions}" change="changeAspect()" width="100%" />
+			<mx:Spacer height="20" />
+			<s:Button label="Start!" id="startBtn" width="100%" height="30" enabled="false" click="startBroadcast()" />
+			<s:Button label="Stop!" id="stopBtn" width="100%" height="30" enabled="false" click="stopBroadcast()" />
+			<mx:Spacer height="20" />
+			<s:Label fontFamily="Verdana" text="Your Stream URL:" width="100%" />
+			<s:TextInput id="liveURL" width="100%" editable="false" text="" />
+		</s:VGroup>
+		<mx:VideoDisplay width="100%" height="100%" id="broadcastVideo" />
+	</s:HGroup>
+	<s:BorderContainer visible="false" id="recordCanvas" top="20" left="225" width="70" height="38" backgroundAlpha="0.6" backgroundColor="0xFF0000">
+		<mx:Text fontSize="30" color="0xFFFFFF" text="LIVE" />
+	</s:BorderContainer>
+</s:Application>

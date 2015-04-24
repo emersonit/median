@@ -1,0 +1,28 @@
+/* emebedded page CSS */
+
+* {
+	padding: 0;
+	margin: 0;
+}
+
+html, body {
+	width: 100%;
+	height: 100%;
+	display: block;
+	padding: 0;
+	margin: 0;
+	overflow: hidden;
+	font-family: "Helvetica", "Arial", sans-serif;
+    background: black;
+    color: white;
+}
+
+div#the-player, div#the-player video {
+	width: 100%;
+	height: 100%;
+}
+
+div#the-player audio {
+	padding: 7px;
+	width: 90%;
+}

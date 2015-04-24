@@ -1,0 +1,56 @@
+mkdir /usr/src/ffmpeg_sources /usr/src/ffmpeg_build
+
+sudo apt-get update
+sudo apt-get -y install unzip autoconf automake build-essential libass-dev libfreetype6-dev libgpac-dev libtheora-dev libtool libvorbis-dev pkg-config texi2html zlib1g-dev libmp3lame-dev
+
+cd /usr/src/ffmpeg_sources
+wget http://www.tortall.net/projects/yasm/releases/yasm-1.2.0.tar.gz
+tar xzf yasm-1.2.0.tar.gz
+cd yasm-1.2.0
+./configure --prefix="/usr/src/ffmpeg_build" --bindir="/usr/local/bin"
+make
+make install
+make distclean
+
+cd /usr/src/ffmpeg_sources
+wget http://download.videolan.org/pub/x264/snapshots/last_x264.tar.bz2
+tar xjf last_x264.tar.bz2
+cd x264-snapshot*
+./configure --prefix="/usr/src/ffmpeg_build" --bindir="/usr/local/bin" --enable-static
+make
+make install
+make distclean
+
+cd /usr/src/ffmpeg_sources
+wget -O fdk-aac.zip https://github.com/mstorsjo/fdk-aac/zipball/master
+unzip fdk-aac.zip
+cd mstorsjo-fdk-aac*
+autoreconf -fiv
+./configure --prefix="/usr/src/ffmpeg_build" --disable-shared
+make
+make install
+make distclean
+
+cd /usr/src/ffmpeg_sources
+wget http://webm.googlecode.com/files/libvpx-v1.3.0.tar.bz2
+tar xjf libvpx-v1.3.0.tar.bz2
+cd libvpx-v1.3.0
+./configure --prefix="/usr/src/ffmpeg_build" --disable-examples
+make
+make install
+make clean
+
+cd /usr/src/ffmpeg_sources
+wget http://ffmpeg.org/releases/ffmpeg-snapshot.tar.bz2
+tar xjf ffmpeg-snapshot.tar.bz2
+cd ffmpeg
+PKG_CONFIG_PATH="/usr/src/ffmpeg_build/lib/pkgconfig"
+export PKG_CONFIG_PATH
+./configure --prefix="/usr/src/ffmpeg_build" --extra-cflags="-I/usr/src/ffmpeg_build/include" \
+   --extra-ldflags="-L/usr/src/ffmpeg_build/lib" --bindir="/usr/local/bin" --extra-libs="-ldl" --enable-gpl \
+   --enable-libass --enable-libfdk-aac --enable-libfreetype --enable-libmp3lame \
+   --enable-libtheora --enable-libvorbis --enable-libvpx --enable-libx264 --enable-nonfree
+make
+make install
+make distclean
+hash -r
