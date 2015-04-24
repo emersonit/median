@@ -24,6 +24,10 @@ You can see Emerson College's Median instance at [https://median.emerson.edu/](h
 - Integration with an existing course enrollment / ERP system, so users can share entries within a course.
 - Integration with the [Amara](http://amara.org/en/) captioning service and [Akamai streaming](http://www.akamai.com/html/resources/live-video-streaming.html).
 
+## Getting Started + Setting It Up
+
+To set up your own instance of Median, check out the `docs` folder, starting with `docs/DOCS-INDEX.md`.
+
 ## A little history
 
 Median was originally built by two student workers at Emerson College to host college admissions promotional videos. It was quickly expanded for use in the curriculum as a YouTube-like service with the advantage of integration with Emerson's user database and course enrollment information. Over time, Median was adapted to service many needs, such as live video, HTML5 support, support for very large file sizes, custom uploaders for award ceremonies and student groups, and a transcoding farm to create "versions" of videos for each platform type and connection speed.
