@@ -459,7 +459,7 @@ require_once('/median-webapp/includes/header.php');
 		<div id="sharing" class="player-panel" style="display: none;">
 			<p>Permalink: <input type="text" id="media-permalink" value="<?php echo getPermalink($mid); ?>" /></p>
 			<p>Embed code: <textarea id="media-embed"><?php
-			$embed_frame = $medain_base_url.'embed/'.$mid.'/';
+			$embed_frame = $median_base_url.'embed/'.$mid.'/';
 			$default_embed_width = 500;
 			$default_embed_height = ($media_info['mt'] == 'audio') ? 25 : 400;
 			echo '<iframe src="'.$embed_frame.'" frameborder="0" width="'.$default_embed_width.'" height="'.$default_embed_height.'" allowfullscreen></iframe>';

@@ -510,7 +510,7 @@ if ($wut == 'info') {
 			$channel->link = htmlentities($median_base_url.'category/'.$options['filter']['cid'].'/');
 			if (isset($cat_info['art_u']) && trim($cat_info['art_u']) != '') {
 				$image = $channel->addChild('itunes:image', null, 'http://www.itunes.com/dtds/podcast-1.0.dtd');
-				$image->addAttribute('href', substr($median_base_url, 0, -1).$cat_info['art_u']);
+				$image->addAttribute('href', substr($median_base_url, 0, -1).str_replace('http://median.emerson.edu', '', $cat_info['art_u']));
 			}
 
 			if (isset($cat_info['sd']) && trim($cat_info['sd']) != '') {
@@ -529,7 +529,7 @@ if ($wut == 'info') {
 			$channel->link = htmlentities($median_base_url.'event/'.$options['filter']['eid'].'/', ENT_QUOTES, 'UTF-8');
 			if (isset($event_info['art_u']) && trim($event_info['art_u']) != '') {
 				$image = $channel->addChild('itunes:image', null, 'http://www.itunes.com/dtds/podcast-1.0.dtd');
-				$image->addAttribute('href', substr($median_base_url, 0, -1).$event_info['art_u']);
+				$image->addAttribute('href', substr($median_base_url, 0, -1).str_replace('http://median.emerson.edu', '', $event_info['art_u']));
 			}
 
 			if (isset($event_info['sde']) && trim($event_info['sde']) != '') {
@@ -557,7 +557,7 @@ if ($wut == 'info') {
 			$channel->link = htmlentities($median_base_url.'group/'.$options['filter']['gid'].'/', ENT_QUOTES, 'UTF-8');
 			if (isset($group_info['a']) && isset($group_info['a']['u']) && trim($group_info['a']['u']) != '') {
 				$image = $channel->addChild('itunes:image', null, 'http://www.itunes.com/dtds/podcast-1.0.dtd');
-				$image->addAttribute('href', substr($median_base_url, 0, -1).$group_info['a']['u']);
+				$image->addAttribute('href', substr($median_base_url, 0, -1).str_replace('http://median.emerson.edu', '', $group_info['a']['u']));
 			}
 			if (isset($group_info['sd']) && trim($group_info['sd']) != '') {
 				$channel->addChild('itunes:subtitle', htmlentities(trim($group_info['sd'])), 'http://www.itunes.com/dtds/podcast-1.0.dtd');
@@ -577,7 +577,7 @@ if ($wut == 'info') {
 			$channel->link = htmlentities($median_base_url.'playlist/'.$options['filter']['plid'].'/', ENT_QUOTES, 'UTF-8');
 			if (isset($playlist_info['art_u']) && trim($playlist_info['art_u']) != '') {
 				$image = $channel->addChild('itunes:image', null, 'http://www.itunes.com/dtds/podcast-1.0.dtd');
-				$image->addAttribute('href', substr($median_base_url, 0, -1).$playlist_info['art_u']);
+				$image->addAttribute('href', substr($median_base_url, 0, -1).str_replace('http://median.emerson.edu', '', $playlist_info['art_u']));
 			}
 			if (isset($playlist_info['sd']) && trim($playlist_info['sd']) != '') {
 				$channel->addChild('itunes:subtitle', htmlentities(trim($playlist_info['sd'])), 'http://www.itunes.com/dtds/podcast-1.0.dtd');
@@ -677,7 +677,7 @@ if ($wut == 'info') {
 					}
 				}
 				$enclosure = $item->addChild('enclosure');
-				$enclosure->addAttribute('url', getHTMLFIVElink($media_info['mid']));
+				$enclosure->addAttribute('url', getHTMLFIVElink($media_entry['mid']));
 				$enclosure->addAttribute('type', $content_type);
 				$enclosure->addAttribute('length', '0');
 			}
