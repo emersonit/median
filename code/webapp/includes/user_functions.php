@@ -156,7 +156,7 @@ function getUserLevel($uid) {
 function getUserMedia($uid) {
 	global $mdb;
 	
-	if (!is_numeric($uid) || $uid * 1 == 0) {
+	if (!is_numeric($uid)) {
 		return false;
 	}
 
@@ -182,7 +182,7 @@ function getUserMedia($uid) {
 // media in groups owned by user, or owned directly
 function getUserManageMedia($uid) {
 
-	if (!is_numeric($uid) || $uid * 1 == 0) {
+	if (!is_numeric($uid)) {
 		return false;
 	}
 
@@ -217,7 +217,7 @@ function getUserManageMedia($uid) {
 function getUserClasses($uid, $as_just_codes = false) {
 	global $mdb, $m, $coursesdb;
 
-	if (!is_numeric($uid) || $uid * 1 == 0) {
+	if (!is_numeric($uid)) {
 		return false;
 	}
 
@@ -319,7 +319,7 @@ function getUserClasses($uid, $as_just_codes = false) {
 function getUserGroups($uid, $as_just_ids = false) {
 	// get full list of groups the user is a member of
 
-	if (!is_numeric($uid) || $uid * 1 == 0) {
+	if (!is_numeric($uid)) {
 		return false;
 	}
 
@@ -351,7 +351,7 @@ function getUserGroups($uid, $as_just_ids = false) {
 function getUserGroupsOwnership($uid, $as_just_ids = false) {
 	// get full list of groups the user is an owner of
 
-	if (!is_numeric($uid) || $uid * 1 == 0) {
+	if (!is_numeric($uid)) {
 		return false;
 	}
 
@@ -382,7 +382,7 @@ function getUserGroupsOwnership($uid, $as_just_ids = false) {
 function getUserEventOwnerships($uid, $as_just_ids = false) {
 	// get full list of events the user owns or a group owns that the user is an owner of
 
-	if (!is_numeric($uid) || $uid * 1 == 0) {
+	if (!is_numeric($uid)) {
 		return false;
 	}
 
@@ -417,7 +417,7 @@ function getUserEventOwnerships($uid, $as_just_ids = false) {
 function getUserCategoryOwnerships($uid, $as_just_ids = false) {
 	// get full list of categories the user owns or a group owns that the user is an owner of
 
-	if (!is_numeric($uid) || $uid * 1 == 0) {
+	if (!is_numeric($uid)) {
 		return false;
 	}
 
@@ -452,7 +452,7 @@ function getUserCategoryOwnerships($uid, $as_just_ids = false) {
 function getUserFavs($uid) {
 	// get full list of user's favorites as media IDs
 
-	if (!is_numeric($uid) || $uid * 1 == 0) {
+	if (!is_numeric($uid)) {
 		return false;
 	}
 
@@ -544,7 +544,7 @@ function getUserAlerts($uid, $just_count = false) {
 
 	*/
 
-	if (!isset($uid) || !is_numeric($uid) || $uid * 1 == 0) {
+	if (!isset($uid) || !is_numeric($uid)) {
 		return false;
 	}
 
